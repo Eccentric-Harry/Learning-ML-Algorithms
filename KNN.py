@@ -1,20 +1,33 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-from sklearn.datasets import make_blobs
 
-X, y = make_blobs (n_samples=300, centers=3, cluster_std=0.6, random_state=0)
-plt.scatter (X[:, 0], X[:, 1], s=50) 
-plt.title("Data Before Clustering") 
-plt.show()
+# Sample data: You can replace this with any dataset you'd like to use
+X = np.array([[1, 2], [2, 3], [4, 5], [8, 7], [10, 10], 
+              [9, 8], [12, 15], [11, 11], [10, 12], [13, 13]])
 
-kmeans =  KMeans(n_clusters=3) 
+# Ask user for the number of clusters
+n_clusters = int(input("Enter the number of clusters: "))
+
+# Create the KMeans object with the given number of clusters
+kmeans = KMeans(n_clusters=n_clusters)
+
+# Fit the model
 kmeans.fit(X)
-y_kmeans = kmeans.predict(X)
 
-plt.scatter (X[:, 0], X[:, 1], c=y_kmeans, s=50, cmap='viridis')
+# Predict the cluster labels for the data points
+labels = kmeans.predict(X)
 
-centroids = kmeans.cluster_centers_
-plt.scatter(centroids[:, 0], centroids[:, 1], c='red', s=200, alpha=0.75, marker='x') 
-plt.title("Data After K-Means Clustering")
+# Retrieve the cluster centers
+centers = kmeans.cluster_centers_
+
+# Plot the data points and cluster centers
+plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='rainbow', marker='o', label='Data Points')
+plt.scatter(centers[:, 0], centers[:, 1], s=200, c='black', marker='x', label='Centers')
+
+# Display plot with labelsx
+plt.title(f'K-Means Clustering with {n_clusters} Clusters')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.legend()
 plt.show()
